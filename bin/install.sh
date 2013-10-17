@@ -1,10 +1,15 @@
 UNDERCLOUDRC=/etc/sysconfig/undercloudrc
 INSTALL_DIR=/opt/stack
+NOVA_INSTALL_DIR=/opt/stack/venvs/nova/lib/python2.7/site-packages/nova
 
 # Install deps
 sudo yum -y install python-devel swig openssl-devel python-pip mysql-devel libxml2-devel libxslt-devel tox
 sudo easy_install nose
 sudo pip install virtualenv setuptools-git flake8 tox
+
+# Patch Nova - Requires a Nova Restart
+cd $NOVA_INSTALL_DIR
+git init
 
 # Source credentials and change install dir
 source $UNDERCLOUDRC
