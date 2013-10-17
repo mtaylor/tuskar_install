@@ -1,4 +1,4 @@
-From 7dd6b8c97e62269622842096de086b1097f9eefa Mon Sep 17 00:00:00 2001
+From 3f56d769ab681b646f45b3062bfed63a494dd246 Mon Sep 17 00:00:00 2001
 From: Martyn Taylor <mtaylor@redhat.com>
 Date: Sun, 4 Aug 2013 12:51:40 +0100
 Subject: [PATCH] Update BM API to use UUID as client ID reference
@@ -12,126 +12,14 @@ Fixes bug 1184447
 
 Change-Id: I8e04ddf31d8aa47c509ef799daea206e5cf3256f
 ---
- .../baremetal-node-create-resp.json                |   2 +-
- .../baremetal-node-create-resp.xml                 |   2 +-
- .../baremetal-node-create-with-address-resp.json   |   2 +-
- .../baremetal-node-create-with-address-resp.xml    |   2 +-
- .../baremetal-node-list-resp.json                  |   2 +-
- .../baremetal-node-list-resp.xml                   |   2 +-
- .../baremetal-node-show-resp.json                  |   2 +-
- .../baremetal-node-show-resp.xml                   |   2 +-
  .../openstack/compute/contrib/baremetal_nodes.py   |  31 +++---
  .../compute/contrib/test_baremetal_nodes.py        | 113 ++++++++++++---------
  nova/tests/integrated/test_api_samples.py          |  14 ++-
  nova/tests/virt/baremetal/db/test_bm_node.py       |  15 +++
  nova/virt/baremetal/db/api.py                      |   4 +
  nova/virt/baremetal/db/sqlalchemy/api.py           |  22 ++++
- 14 files changed, 138 insertions(+), 77 deletions(-)
+ 6 files changed, 130 insertions(+), 69 deletions(-)
 
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.json b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.json
-index fdb2065..b7924e3 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.json
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.json
-@@ -1,7 +1,7 @@
- {
-     "node": {
-         "cpus": 8,
--        "id": 1,
-+        "id": "b63a8fc6-2977-4a11-a611-3ec45f839c4c",
-         "instance_uuid": null,
-         "interfaces": [],
-         "local_gb": 128,
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.xml b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.xml
-index 6a0b3a2..c72c8e3 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.xml
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-resp.xml
-@@ -6,7 +6,7 @@
-   memory_mb="8192"
-   service_host="host"
-   local_gb="128"
--  id="1"
-+  id="b63a8fc6-2977-4a11-a611-3ec45f839c4c"
-   pm_user="pm_user"
-   terminal_port="8000">
-   <interfaces/>
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.json b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.json
-index 90ff4e3..e39e454 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.json
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.json
-@@ -1,7 +1,7 @@
- {
-     "node": {
-         "cpus": 8,
--        "id": 1,
-+        "id": "b63a8fc6-2977-4a11-a611-3ec45f839c4c",
-         "instance_uuid": null,
-         "interfaces": [
-             {
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.xml b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.xml
-index 1432629..351e33a 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.xml
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-create-with-address-resp.xml
-@@ -6,7 +6,7 @@
-   memory_mb="8192"
-   service_host="host"
-   local_gb="128"
--  id="1"
-+  id="b63a8fc6-2977-4a11-a611-3ec45f839c4c"
-   pm_user="pm_user"
-   terminal_port="8000">
-   <interfaces>
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.json b/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.json
-index 1b8d5a8..d2ca920 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.json
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.json
-@@ -2,7 +2,7 @@
-     "nodes": [
-         {
-             "cpus": 8,
--            "id": 1,
-+            "id": "b63a8fc6-2977-4a11-a611-3ec45f839c4c",
-             "instance_uuid": null,
-             "interfaces": [
-                 {
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.xml b/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.xml
-index 2afc47f..82ee9f3 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.xml
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-list-resp.xml
-@@ -7,7 +7,7 @@
-     memory_mb="8192"
-     service_host="host"
-     local_gb="128"
--    id="1"
-+    id="b63a8fc6-2977-4a11-a611-3ec45f839c4c"
-     pm_user="pm_user"
-     terminal_port="8000">
-     <interfaces>
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.json b/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.json
-index a8ba25e..069aeaf 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.json
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.json
-@@ -1,7 +1,7 @@
- {
-     "node": {
-         "cpus": 8,
--        "id": 1,
-+        "id": "b63a8fc6-2977-4a11-a611-3ec45f839c4c",
-         "instance_uuid": null,
-         "interfaces": [
-             {
-diff --git a/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.xml b/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.xml
-index 438ee59..99d0be6 100644
---- a/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.xml
-+++ b/doc/api_samples/os-baremetal-nodes/baremetal-node-show-resp.xml
-@@ -6,7 +6,7 @@
-   memory_mb="8192"
-   service_host="host"
-   local_gb="128"
--  id="1"
-+  id="b63a8fc6-2977-4a11-a611-3ec45f839c4c"
-   pm_user="pm_user"
-   terminal_port="8000">
-   <interfaces>
 diff --git a/nova/api/openstack/compute/contrib/baremetal_nodes.py b/nova/api/openstack/compute/contrib/baremetal_nodes.py
 index 6f932e7..4cf51a8 100644
 --- a/nova/api/openstack/compute/contrib/baremetal_nodes.py
@@ -232,10 +120,10 @@ index 6f932e7..4cf51a8 100644
              if if_id and if_id != i['id']:
                  continue
 diff --git a/nova/tests/api/openstack/compute/contrib/test_baremetal_nodes.py b/nova/tests/api/openstack/compute/contrib/test_baremetal_nodes.py
-index 23d06ca..06fb643 100644
+index e5fd858..ed34707 100644
 --- a/nova/tests/api/openstack/compute/contrib/test_baremetal_nodes.py
 +++ b/nova/tests/api/openstack/compute/contrib/test_baremetal_nodes.py
-@@ -48,33 +48,37 @@ class BareMetalNodesTest(test.TestCase):
+@@ -48,33 +48,37 @@ class BareMetalNodesTest(test.NoDBTestCase):
              'pm_password': "pm_pass",
              'terminal_port': 8000,
              'interfaces': [],
@@ -281,7 +169,7 @@ index 23d06ca..06fb643 100644
  
      def test_index(self):
          nodes = [{'id': 1},
-@@ -97,44 +101,47 @@ class BareMetalNodesTest(test.TestCase):
+@@ -97,44 +101,47 @@ class BareMetalNodesTest(test.NoDBTestCase):
          self.assertEqual(2, len(res_dict['nodes'][1]['interfaces']))
  
      def test_show(self):
@@ -346,7 +234,7 @@ index 23d06ca..06fb643 100644
                                 address=address,
                                 datapath_id=None,
                                 port_no=None).\
-@@ -142,78 +149,84 @@ class BareMetalNodesTest(test.TestCase):
+@@ -142,78 +149,84 @@ class BareMetalNodesTest(test.NoDBTestCase):
          db.bm_interface_get(self.context, 12345).\
                  AndReturn({'id': 12345, 'address': address})
          self.mox.ReplayAll()
@@ -457,10 +345,10 @@ index 23d06ca..06fb643 100644
 +                          node_uuid,
                            body)
 diff --git a/nova/tests/integrated/test_api_samples.py b/nova/tests/integrated/test_api_samples.py
-index 3cd7184..b30de68 100644
+index 586e1cb..6d84e97 100644
 --- a/nova/tests/integrated/test_api_samples.py
 +++ b/nova/tests/integrated/test_api_samples.py
-@@ -3001,7 +3001,7 @@ class CellsCapacitySampleJsonTest(ApiSampleTestBase):
+@@ -2719,7 +2719,7 @@ class CellsCapacitySampleJsonTest(ApiSampleTestBaseV2):
                           "cell_capacities.Cell_capacities")
  
      def setUp(self):
@@ -469,7 +357,7 @@ index 3cd7184..b30de68 100644
          super(CellsCapacitySampleJsonTest, self).setUp()
          # (navneetk/kaushikc) : Mock cell capacity to avoid the capacity
          # being calculated from the compute nodes in the environment
-@@ -3051,7 +3051,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBase, bm_db_base.BMDBTestCase):
+@@ -2769,7 +2769,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBaseV2, bm_db_base.BMDBTestCase):
          response = self._do_post("os-baremetal-nodes",
                                   "baremetal-node-create-req",
                                   {})
@@ -479,7 +367,7 @@ index 3cd7184..b30de68 100644
          return self._verify_response("baremetal-node-create-resp", subs,
                                       response, 200)
  
-@@ -3061,7 +3062,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBase, bm_db_base.BMDBTestCase):
+@@ -2779,7 +2780,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBaseV2, bm_db_base.BMDBTestCase):
          response = self._do_post("os-baremetal-nodes",
                                   "baremetal-node-create-with-address-req",
                                   req_subs)
@@ -489,7 +377,7 @@ index 3cd7184..b30de68 100644
                  'interface_id': '\d+',
                  'address': address}
          self._verify_response("baremetal-node-create-with-address-resp",
-@@ -3077,7 +3079,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBase, bm_db_base.BMDBTestCase):
+@@ -2795,7 +2797,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBaseV2, bm_db_base.BMDBTestCase):
          node_id = self._create_node()
          interface_id = self._add_interface(node_id)
          response = self._do_get('os-baremetal-nodes')
@@ -499,7 +387,7 @@ index 3cd7184..b30de68 100644
                  'interface_id': interface_id,
                  'address': 'aa:aa:aa:aa:aa:aa',
                  }
-@@ -3088,7 +3091,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBase, bm_db_base.BMDBTestCase):
+@@ -2806,7 +2809,8 @@ class BareMetalNodesJsonTest(ApiSampleTestBaseV2, bm_db_base.BMDBTestCase):
          node_id = self._create_node()
          interface_id = self._add_interface(node_id)
          response = self._do_get('os-baremetal-nodes/%s' % node_id)
