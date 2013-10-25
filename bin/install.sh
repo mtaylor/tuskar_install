@@ -1,6 +1,6 @@
-UNDERCLOUDRC=/root/stackrc
+UNDERCLOUDRC=/etc/sysconfig/undercloudrc
 INSTALL_DIR=/opt/stack
-NOVA_INSTALL_DIR=/opt/stack/venvs/nova/lib/python2.7/site-packages/nova
+NOVA_INSTALL_DIR=/usr/lib/python2.7/site-packages/nova
 BASE_DIR=`dirname $0`/../
 
 # Install deps
@@ -12,7 +12,7 @@ sudo pip install virtualenv setuptools-git flake8 tox
 cd $BASE_DIR/patches/nova
 sudo find $NOVA_INSTALL_DIR -name "*.pyc" -exec rm -rf {} \;
 sudo find . -name "*.*" -exec patch $NOVA_INSTALL_DIR/{} {} \;
-sudo service nova-api restart
+sudo service openstack-nova-api restart
 
 # Source credentials
 sudo source $UNDERCLOUDRC
