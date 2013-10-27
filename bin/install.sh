@@ -15,7 +15,7 @@ sudo find . -name "*.*" -exec patch $NOVA_INSTALL_DIR/{} {} \;
 sudo service openstack-nova-api restart
 
 # Source credentials
-sudo source $UNDERCLOUDRC
+source $UNDERCLOUDRC
 
 # Setup Tuskar Core
 cd $INSTALL_DIR
@@ -40,8 +40,18 @@ source .tox/venv/bin/activate
 pip install -r requirements.txt
 tuskar-dbsync --config-file etc/tuskar/tuskar.conf
 
-# Run Tuskar API service
 mkdir $INSTALL_DIR/tuskar/log/
+
+# Setup Nova Overcloud Conf
+sudo mkdir /etc/tuskar
+sudo echo "
+keystone_url: '$OS_AUTH_URL'
+nova_username: '$OS_USERNAME'
+nova_tenantname: '$OS_TENANT_NAME'
+nova_password: '$OS_PASSWORD'
+" > /etc/tuskar/nova_overcloud_config.yml
+
+# Run Tuskar API
 nohup tuskar-api --config-file etc/tuskar/tuskar.conf --debug > $INSTALL_DIR/tuskar/log/api.log 2>&1 &
 
 # Setup Tuskar UI
