@@ -12,14 +12,20 @@ Once you have done this do the following:
 
         heat stack-delete overcloud
 
+1. Checkout Tuskar Install
+
+        cd ~
+        git clone https://github.com/mtaylor/tuskar_install.git
+        cd tuskar_install
+
 1. Install and configure Tuskar
 
         # check the variables at the top of ./bin/install.sh are correct then run:
-        ./bin./install.sh
+        ./bin/install.sh
 
 1.  Next add the MAC address to the top of /bin/create_nodes.sh
 
-        ./bin./create_nodes.sh
+        ./bin/create_nodes.sh
 
 1. Navigate to <undercloud-control-ip>:8080 and log in
 
