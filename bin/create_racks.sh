@@ -1,6 +1,8 @@
 #!/bin/bash
 TUSKAR_URL="http://localhost:8585/v1"
+UNDERCLOUDRC="/etc/sysconfig/undercloudrc"
 
+source $UNDERCLOUDRC
 declare -A RACKS
 RACKS["rack-m1"]="52:54:00:2c:54:ec"
 RACKS["rack-control"]="52:54:00:a8:25:8b"
