@@ -44,7 +44,8 @@ mkdir $INSTALL_DIR/tuskar/log/
 
 # Setup Nova Overcloud Conf
 sudo mkdir /etc/tuskar
-sudo echo "
+sudo chmod -R 777 /etc/tuskar
+echo "
 keystone_url: '$OS_AUTH_URL'
 nova_username: '$OS_USERNAME'
 nova_tenantname: '$OS_TENANT_NAME'
