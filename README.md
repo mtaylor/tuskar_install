@@ -15,7 +15,9 @@ https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runningi
 
 Install 
 --------
-Once you have done this do the following:
+
+Once you have completed all steps in the above Guide do the following:
+
 
 1. [CONTROL]  Unprovision the overcloud:
 
