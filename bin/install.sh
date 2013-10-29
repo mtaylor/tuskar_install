@@ -19,7 +19,7 @@ source $UNDERCLOUDRC
 
 # Setup Tuskar Core
 cd $INSTALL_DIR
-git clone https://github.com/openstack/tuskar
+git clone https://github.com/mtaylor/tuskar
 cd tuskar
 
 ## Configure Tuskar Core
