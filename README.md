@@ -29,7 +29,7 @@ Once you have done this do the following:
 
 1. [CONTROL] Run the Create Node Script
 
-        ./bin/create_nodes.sh
+        ./bin/create_racks.sh
 
 1. [HOST]/[BROWSER] Navigate to <undercloud-control-ip>:8080 and log in
 
