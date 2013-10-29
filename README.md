@@ -4,8 +4,17 @@ tuskar install
 
 This install script is designed to run on top of Undercloud Live Images, see: https://github.com/agroup/undercloud-live/.  It is not tested and therefore not guarentted to work on any other OpenStack installation.
 
-To install first run through the steps here: https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
 
+
+Prerequisite
+-------------
+
+To install tuskar using this script, you **MUST** first run through all steps: 1 - 28 from this guide:
+
+https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
+
+Install 
+--------
 Once you have done this do the following:
 
 1. [CONTROL]  Unprovision the overcloud:
