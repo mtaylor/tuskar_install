@@ -25,16 +25,29 @@ Once you have done this do the following:
 
 1. [CONTROL] Next add the MAC address to the top of /bin/create_nodes.sh
 
+        # Each Rack in the Associative Array can take a string of MAC address separated by spaces.
+
+1. [CONTROL] Run the Create Node Script
+
         ./bin/create_nodes.sh
 
 1. [HOST]/[BROWSER] Navigate to <undercloud-control-ip>:8080 and log in
 
-        # If working on a remote machine without X you may want to setup a tunnel:
+        # If working on a remote machine without X you may want to setup a tunnel (and proxy in browser)
         ssh -D 8080 -C -N stack@lab12
 
-1. [BROWSER] Create a control resource class.  Be sure to associate the correct rack with this resource class
+1. [BROWSER] Create a control resource class.
 
-1. [BROWSER] Create a compute resource class.  Be sure to associate the correct rack with this resource class.
+        # Be sure to associate the correct rack with this resource class.
+        # Ensure you choose the overcloud-control image
+
+1. [BROWSER] Create a compute resource class.
+
+        # Be sure to associate the correct rack with this resource class.
+        # Ensure you choose teh overcloud-compute image
 
 1. [BROWSER] Click provision racks button.
 
+1. [BROWSER] Check the status of the overcloud.
+
+1. [CONTROL] Once complete follow on from step: 26 here: https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
