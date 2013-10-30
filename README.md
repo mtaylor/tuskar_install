@@ -35,7 +35,7 @@ Once you have completed all steps in the above Guide do the following:
         # check the variables at the top of ./bin/install.sh are correct then run:
         ./bin/install.sh
 
-1. [CONTROL] Next add the MAC address to the top of /bin/create_nodes.sh
+1. [CONTROL] Next add the MAC address to the top of /bin/create_racks.sh
 
         # Each Rack in the Associative Array can take a string of MAC address separated by spaces.
 
