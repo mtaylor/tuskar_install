@@ -42,7 +42,9 @@ Once you have completed all steps in the above Guide do the following:
 
         ./bin/create_racks.sh
 
-1. [HOST]/[BROWSER] Navigate to <undercloud-control-ip>:8080 and log in
+1. [HOST]/[BROWSER] Navigate to <undercloud-control-ip>:8080 and log in.
+
+    Login is admin, password is unset.
 
         # If working on a remote machine without X you may want to setup a tunnel (and proxy in browser)
         ssh -D 8080 -C -N stack@lab12
