@@ -70,4 +70,41 @@ Once you have completed all steps in the above Guide do the following:
 
 1. [BROWSER] Check the status of the overcloud.
 
-1. [CONTROL] Once complete, pick up with the step that runs configure-overcloud.sh from here: https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
+1. [CONTROL] Use heat stack-list to check for the overcloud to finish deploying.
+             It should show CREATE_COMPLETE in the output.
+
+1. [CONTROL] Configure the overcloud. This performs setup of the overcloud and loads the demo image
+             into overcloud glance. (Assumption: you already have the fedora-cloud.qcow2 image on local disk)
+
+        source /etc/sysconfig/undercloudrc
+        export OVERCLOUD_IP=$(nova list | grep notcompute.*ctlplane | sed  -e "s/.*=\\([0-9.]*\\).*/\1/")
+        source tripleo-overcloud-passwords
+        source /opt/stack/tripleo-incubator/overcloudrc
+        glance image-create \
+                --name user \
+                --public \
+                --disk-format qcow2 \
+                --container-format bare \
+                --file fedora-cloud.qcow2
+        source /opt/stack/tripleo-incubator/overcloudrc-user
+        nova boot --key-name default --flavor m1.tiny --image user demo
+        # nova list until the instance is ACTIVE
+        nova list
+        PORT=$(neutron port-list -f csv -c id --quote none | tail -n1)
+        neutron floatingip-create ext-net --port-id "${PORT//[[:space:]]/}"
+        # nova list again to see the assigned floating ip
+        nova list
+        
+1. [CONTROL] To discover the IP and URI for overcloud Horizon - you can do this in 2 ways:
+
+        
+        1. Using nova list - you want the IP address of the notcompute node
+        2. Via the Tuskar UI - navigate Control Resource Class --> Control Rack --> Node
+           and you will see the IP address (only after CREATE_COMPLETE though)
+           
+        You can then use this IP to construct the Horizon URI.   
+        
+
+
+
+    
