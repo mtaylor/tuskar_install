@@ -58,7 +58,7 @@ Once you have completed all steps in the above Guide do the following:
 1. [BROWSER] Create a compute resource class.
 
         # Be sure to associate the correct rack with this resource class.
-        # Ensure you choose teh overcloud-compute image
+        # Ensure you choose the overcloud-compute image
 
 1. [BROWSER] Click provision racks button.
 
