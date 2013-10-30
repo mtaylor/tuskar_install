@@ -70,4 +70,4 @@ Once you have completed all steps in the above Guide do the following:
 
 1. [BROWSER] Check the status of the overcloud.
 
-1. [CONTROL] Once complete follow on from step: 26 here: https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
+1. [CONTROL] Once complete, pick up with the step that runs configure-overcloud.sh from here: https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
