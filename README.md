@@ -38,6 +38,12 @@ Once you have completed all steps in the above Guide do the following:
 1. [CONTROL] Next add the MAC address to the top of /bin/create_racks.sh
 
         # Each Rack in the Associative Array can take a string of MAC address separated by spaces.
+        #
+        # You need a rack defined for each type of resource class you intend to
+        # create.
+        #
+        # Add MAC addresses to each defined rack for the nodes you intend to
+        # provision as that resource type.
 
 1. [CONTROL] Run the Create Node Script
 
