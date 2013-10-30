@@ -9,7 +9,8 @@ This install script is designed to run on top of Undercloud Live Images, see: ht
 Prerequisite
 -------------
 
-To install tuskar using this script, you **MUST** first run through all steps: 1 - 28 from this guide:
+To install tuskar using this script, you **MUST** first run the steps through
+running configure-overcloud.sh from this guide:
 
 https://github.com/agroup/undercloud-live/blob/slagle/package/README.md#runninginstalling-2-node
 
