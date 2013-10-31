@@ -99,8 +99,9 @@ Once you have completed all steps in the above Guide do the following:
 
         
         1. Using nova list - you want the IP address of the notcompute node
-        2. Via the Tuskar UI - navigate Control Resource Class --> Control Rack --> Node
-           and you will see the IP address (only after CREATE_COMPLETE though)
+        2. Via the Tuskar UI - using the 'standard' parts of Horizon - go to 'Project' --> 'Instances'
+           and you will see the IP address. Again, you want the IP of notcompute (alternatively,
+           the instance launced from the 'overcloud-control' image).
            
         You can then use this IP to construct the Horizon URI.   
         
