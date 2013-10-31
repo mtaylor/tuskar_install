@@ -108,4 +108,24 @@ Once you have completed all steps in the above Guide do the following:
 
 
 
-    
+Work arounds for potential issues
+----------------------------------
+
+1. heat stack-list shows the stack in DELETE_COMPLETE state and will not go away.
+
+This is a known issue in Heat, but Heat devs are not aware of what the cause is or steps to reproduce.
+This is caused by NULL being set in the deleted_at field of the stack table in the heat database.  To fix
+set this field to a random datetime.
+
+        # [CONTROL]
+        mysql -r root -h localhost
+        use heat;
+        
+        # Check to see if the error is caused by NULL set in the deleted_at column
+        select deleted_at from stack where id="<stack_id>"
+
+        # Set the deleted_at column to any random timestamp
+        update stack set deleted_at="2013-10-30 18:50:10" where id="<stack_id>"
+
+        # Check to see if the stack is not showing in heat stack-list
+        heat stack-list 
