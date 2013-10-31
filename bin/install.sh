@@ -2,6 +2,7 @@ UNDERCLOUDRC=/etc/sysconfig/undercloudrc
 INSTALL_DIR=/opt/stack
 NOVA_INSTALL_DIR=/usr/lib/python2.7/site-packages/nova
 BASE_DIR=`dirname $0`/../
+TRIPLEO_PASSWORDS=/home/stack/tripleo-overcloud-passwords
 
 # Install deps
 sudo yum -y install python-devel swig openssl-devel python-pip mysql-devel libxml2-devel libxslt-devel tox patch
@@ -33,6 +34,13 @@ tenant_name=$OS_TENANT_NAME
 auth_url=$OS_AUTH_URL
 insecure=True
 " >> etc/tuskar/tuskar.conf
+
+echo "[overcloud]
+" >> etc/tuskar/tuskar.conf
+cat $TRIPLEO_PASSWORDS >> etc/tuskar/tuskar.conf
+echo "
+OVERCLOUD_LIBVIRT_TYPE=qemu" >> etc/tuskar/tuskar.conf
+
 
 ## Create virtual environment and install Tuskar Core deps
 tox -evenv -- echo 'done'
