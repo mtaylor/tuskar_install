@@ -49,26 +49,46 @@ Once you have completed all steps in the above Guide do the following:
 
         ./bin/create_racks.sh
 
-1. [HOST]/[BROWSER] Navigate to <undercloud-control-ip>:8080 and log in.
+1. [HOST]/[BROWSER] Navigate to <undercloud-control-ip>:8080, log in, and navigate to the Tuskar section of the dashboard.
 
-    Login is admin, password is unset.
+    The username is admin and the password is unset.
+
+    Since the Tuskar UI is a plugin for Horizon, the user interface will look familiar to those who have used Horizon before.  Click on the Infrastructure tab to reach the Tuskar section.
 
         # If working on a remote machine without X you may want to setup a tunnel (and proxy in browser)
         ssh -D 8080 -C -N stack@lab12
 
 1. [BROWSER] Create a control resource class.
 
-        # Be sure to associate the correct rack with this resource class.
-        # Ensure you choose the overcloud-control image
+    Click on the 'Create Class' button to start the resource class creation workflow for a control resource class.  This resource class will be responsible for running shared OpenStack services such as Keystone, Swift and Cinder.
+
+        # Select 'Controller' in the 'Class Type' drop down.
+        # Ensure you choose the overcloud-control image.
+        # Be sure to associate the correct control rack with this resource class.
 
 1. [BROWSER] Create a compute resource class.
 
-        # Be sure to associate the correct rack with this resource class.
-        # Ensure you choose the overcloud-compute image
+    Click on the 'Create Class' button to start the resource class creation workflow for a compute resource class.  For demonstration purposes we will represent the Amazon EC2 m1 class and create the following flavors:
 
-1. [BROWSER] Click provision racks button.
+| Flavor Name | VCPU | RAM (MB) | Root Disk (GB) | Ephemeral Disk (GB) | Swap Disk (MB) |
+|:-----------:|:----:|:--------:|:--------------:|:-------------------:|:--------------:|
+| tiny        | 1    | 512      | 1              | 0                   | 0              |
+| small       | 1    | 2048     | 20             | 0                   | 0              |
+| medium      | 2    | 4096     | 40             | 0                   | 0              |
+| large       | 4    | 8192     | 80             | 0                   | 0              |
+| xlarge      | 8    | 16384    | 160            | 0                   | 0              |
 
+        # Name the resource class 'm1'.
+        # Select 'Compute' in the 'Class Type' drop down.
+        # Ensure you choose the overcloud-compute image.
+        # Create the flavors listed above.
+        # Be sure to associate the correct compute rack with this resource class.
+
+1. [BROWSER] Click on the 'Provision Deployment' button.
+   
 1. [BROWSER] Check the status of the overcloud.
+
+    By clicking on the 'Racks' tab, you can see the status of the provisioning racks.
 
 1. [CONTROL] Use heat stack-list to check for the overcloud to finish deploying.
              It should show CREATE_COMPLETE in the output.
