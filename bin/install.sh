@@ -6,6 +6,7 @@ TRIPLEO_PASSWORDS=/home/stack/tripleo-overcloud-passwords
 
 # Install deps
 sudo yum -y install python-devel swig openssl-devel python-pip mysql-devel libxml2-devel libxslt-devel tox patch
+sudo python-pip uninstall tox --version 1.4.2
 sudo easy_install nose
 sudo pip install virtualenv setuptools-git flake8 tox
 
