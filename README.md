@@ -274,7 +274,7 @@ Install and use Tuskar to deploy the Overcloud:
 ------------------
 <a name=tuskar></a>
 
-Once you have all steps above you are ready to install Tuskar and deploy
+Once you have completed the steps above you are ready to install Tuskar and deploy
 an Overcloud:
 
 1. **[CONTROL] Checkout Tuskar Install**
@@ -537,7 +537,7 @@ set this field to a random datetime.
 You can use the nova baremetal CLI to confirm the values of the 2 baremetal
 node MAC addresses:
 
-        [HOST]
+        [CONTROL]
         #source the undercloud credentials
         [stack@ucl-control-live tuskar_install]$ source /etc/sysconfig/undercloudrc
         #list the baremetal nodes:
