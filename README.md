@@ -219,7 +219,7 @@ specified otherwise.
 1. **[LEAF] Edit /etc/sysconfig/undercloud-live-config**
 
    Set all the defined environment variables in the file, as described above.
-   Once edited, run undercloud-metadata  on the control node to refresh the configuration.
+   Once edited, run undercloud-metadata  on the LEAF node to refresh the configuration.
 
    MAKE SURE you set the variables correctly, as mentioned in the previous
    step for CONTROL.
