@@ -34,8 +34,9 @@ Each step below (where applicable) is prefaced with what system to run it on.
 
 Commands on the Host can be run as your normal user.
 
-Commands on the Control and Leaf nodes should be run as the stack user unless
-specified otherwise.
+Commands on the Control and Leaf nodes should be run as the **stack** user unless
+specified otherwise (you do **not** need to create this user it will be created
+for you on the Control and Leaf VMs).
 
 ### Prerequisites
 * Instructions below assume Fedora 19 x86_64 on the HOST machine.
@@ -106,10 +107,12 @@ specified otherwise.
 
         undercloud-live/bin/nodes.sh
 
-1. **[HOST] Define a VM for the control node, and one for the leaf node.**
+1. **[HOST] Review the VM templates for the control node and leaf nodes.**
 
    There are libvirt templates called ucl-control-live and ucl-leaf-live in
-   the **undercloud-live/templates** directory to *help* with this.
+   the **undercloud-live/templates** directory for you to create the Control
+   and Leaf VMs from.
+
    Review the templates and make any changes you'd like (e.g., increase ram).
 
    **Note**: you will need to access the resulting VMs to drive the installation
@@ -122,15 +125,20 @@ specified otherwise.
    **Note**: when reviewing the above templates, you will note they are
    expecting the Fedora-Undercloud-Control.iso and Fedora-Undercloud-Leaf.iso
    images to be in [HOST] /var/lib/libvirt/images so make sure you move them there
-   after download and rename or edit the XML accordingly. Furthermore,
-   the templates also reference two qcow disk images you will need to create:
+   after download and rename or edit the XML accordingly.
+
+1. **[HOST]: Create the disk images that your VMs will use:**
+
+   Note: the path to the images you are creating below is reference by the
+   XML templates for the Control and Leaf VMs. If you have edited that
+   path in the previous step then ammend the following accordingly:
 
         cd /var/lib/libvirt/images
         qemu-img create -f qcow2 ucl-leaf-live.qcow2 40G
         qemu-img create -f qcow2 ucl-control-live.qcow2 40G
         cd $TRIPLEO_ROOT
 
-1. **[HOST] Boot the VMs for the control and leaf nodes**.
+1. **[HOST] Create and boot the VMs for the control and leaf nodes**.
 
    Assuming you are using the provided XML templates from above:
 
@@ -165,6 +173,10 @@ specified otherwise.
 
         liveinst --kickstart /opt/stack/undercloud-live/kickstart/anaconda-ks.cfg
 
+   **Note:** the installation is automated; you do not need to create any users
+   or edit the disk configuration as you may be accustomed to when installing
+   Fedora usually.
+
 1. **[CONTROL],[LEAF] Reboot the VMs:**
 
    Once the install has finished, reboot the control and leaf VM's. Make
@@ -182,6 +194,10 @@ specified otherwise.
         sudo ip route add 192.0.2.0/24 via $LEAF_IP
 
 1. **[CONTROL] Edit /etc/sysconfig/undercloud-live-config**
+
+   **Note:** you will need superuser privileges to edit this file
+
+        sudo vi /etc/sysconfig/undercloud-live-config
 
    You need to set all the defined environment variables in the file according
    to your enviroment. Remember to set $UNDERCLOUD_MACS based on the output
@@ -238,6 +254,20 @@ specified otherwise.
         /opt/stack/images/overcloud-compute.qcow2
         /opt/stack/images/deploy-ramdisk.initramfs
         /opt/stack/images/deploy-ramdisk.kernel
+        #the following will be used later to launch an instance in Overcloud
+        /opt/stack/images/fedora-cloud.qcow2
+
+   Assuming you have previously downloaded all images to a directory on the
+   HOST, you can use the followig scp commands for copying the images across
+   (**SET CONTROL_IP** accordingly):
+
+        [HOST]
+        CONTROL_IP=192.168.122.155
+        scp overcloud-control.qcow2 stack@$CONTROL_IP:/opt/stack/images
+        scp overcloud-compute.qcow2 stack@$CONTROL_IP:/opt/stack/images
+        scp deploy-ramdisk.initramfs stack@$CONTROL_IP:/opt/stack/images
+        scp deploy-ramdisk.kernel stack@$CONTROL_IP:/opt/stack/images
+        scp fedora-cloud.qcow2 stack@$CONTROL_IP:/opt/stack/images
 
 1. **[CONTROL] Load the images into glance.**
 
@@ -374,13 +404,13 @@ an Overcloud:
 
         #Don't worry if the following complains about 'flavor m1.tiny doesn't exist'
         /opt/stack/undercloud-live/bin/configure-overcloud.sh
-        
+
         #get overcloud control node IP address:
         source /etc/sysconfig/undercloudrc
         export OVERCLOUD_IP=$(nova list | grep notcompute.*ctlplane | sed  -e "s/.*=\\([0-9.]*\\).*/\1/")
 
 1. **[CONTROL] Register an Overcloud demo image to launch:**
-      
+
    **NOTE**: you should already have the demo fedora-cloud.qcow2 image on CONTROL. Make sure the
    path to that image is specified correctly below:
 
@@ -409,9 +439,9 @@ an Overcloud:
         nova boot --key-name default --flavor m1.small --image user demo
         # nova list until the instance is ACTIVE
         nova list
-        
+
 1. **[CONTROL] Add floating IP to your Overcloud instance:**
- 
+
         PORT=$(neutron port-list -f csv -c id --quote none | tail -n1)
         neutron floatingip-create ext-net --port-id "${PORT//[[:space:]]/}"
         # nova list again to see the assigned floating ip
@@ -429,10 +459,10 @@ an Overcloud:
         You can then use this IP to construct the Horizon URI:
 
             http://IP_OF_NOTCOMPUTE:80
-            
+
    To login to Overcloud Horizon - username is 'admin' and the password is available from the
    tripleo-overcloud-passwords file (it is the OVERCLOUD_ADMIN_PASSWORD):
-         
+
         cd ~
         cat tripleo-overcloud-passwords
 
