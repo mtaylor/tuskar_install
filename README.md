@@ -16,9 +16,6 @@ second part will guide you through the Tuskar installation.
  * [Setup Tuskar and deploy Overcloud](#tuskar)
     * [Extra Notes/Troubleshooting for the Tuskar install](#notes_tuskar)
 
-The images referenced in these instructions can all be found at
-[http://ccrouch.fedorapeople.org](http://ccrouch.fedorapeople.org).
-
 ---------------------------------------------------------------------------
 
 Setup the 2 node undercloud:
