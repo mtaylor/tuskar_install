@@ -402,6 +402,7 @@ an Overcloud:
    Overcloud using Tuskar. We can now perform setup of the overcloud and
    load the demo image into overcloud glance.
 
+        cd ~
         #Don't worry if the following complains about 'flavor m1.tiny doesn't exist'
         /opt/stack/undercloud-live/bin/configure-overcloud.sh
 
