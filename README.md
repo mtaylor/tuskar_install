@@ -452,14 +452,21 @@ an Overcloud:
 
 1. **[CONTROL] Discover the IP and URI for overcloud Horizon**
 
-   Presently you can do this in 2 ways:
+   You can do this with the nova command line client, or via undercloud Horizon:
 
-        1. Using nova list - you want the IP address of the notcompute node
-        2. Via the Tuskar UI - using the 'standard' parts of Horizon - go to 'Project' --> 'Instances'
-           and you will see the IP address. Again, you want the IP of notcompute (alternatively,
-           the instance launced from the 'overcloud-control' image).
+   Using **nova list** - you want the IP address of the notcompute node:
+        
+        #you need to source the undercloudrc again first:
+        source /etc/sysconfig/undercloudrc
+        nova list
+        #remember to source the overcloudrc if you want to use overcloud clients
+        source /opt/stack/tripleo-incubator/overcloudrc
+ 
+   Via **undercloud Horizon** - using the 'standard' parts of Horizon - go to 'Project' --> 'Instances'
+   and you will see the IP address. Again, you want the IP of notcompute (alternatively,
+   the instance launched from the 'overcloud-control' image).
 
-        You can then use this IP to construct the Horizon URI:
+   You can then use this IP to construct the Horizon URI:
 
             http://IP_OF_NOTCOMPUTE:80
 
