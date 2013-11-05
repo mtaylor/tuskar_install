@@ -373,21 +373,41 @@ an Overcloud:
    loads the demo image into overcloud glance.
    (Assumption: you already have the demo fedora-cloud.qcow2 image on CONTROL):
 
+        #Don't worry if the following complains about 'flavor m1.tiny doesn't exist'
+        /opt/stack/undercloud-live/bin/configure-overcloud.sh
+        
+        #get overcloud control node IP address:
         source /etc/sysconfig/undercloudrc
         export OVERCLOUD_IP=$(nova list | grep notcompute.*ctlplane | sed  -e "s/.*=\\([0-9.]*\\).*/\1/")
+
+1. **[CONTROL] Register an Overcloud demo image to launch:**
+      
+        #source credentials
         source tripleo-overcloud-passwords
         source /opt/stack/tripleo-incubator/overcloudrc
-        #NOTE SET THE PATH TO THE fedora-cloud.qcow2 image below!
+        #NOTE SET THE CORRECT PATH TO THE fedora-cloud.qcow2 image below!
         glance image-create \
                 --name user \
                 --public \
                 --disk-format qcow2 \
                 --container-format bare \
                 --file fedora-cloud.qcow2
+
+1. **[CONTROL] Setup Overcloud user:**
+
+
         source /opt/stack/tripleo-incubator/overcloudrc-user
-        nova boot --key-name default --flavor m1.tiny --image user demo
+        user-config
+
+1. **[CONTROL] Launch an Overcloud instance:**
+   Note - the flavor specified below must match one that was created by you earlier in the Tuskar UI.
+   If you are unsure you can use 'nova flavor-list':
+
+        nova boot --key-name default --flavor m1.small --image user demo
         # nova list until the instance is ACTIVE
         nova list
+        
+1. **[CONTROL] Add floating IP to your Overcloud instance:**        
         PORT=$(neutron port-list -f csv -c id --quote none | tail -n1)
         neutron floatingip-create ext-net --port-id "${PORT//[[:space:]]/}"
         # nova list again to see the assigned floating ip
