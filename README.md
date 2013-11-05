@@ -368,13 +368,18 @@ an Overcloud:
 
     | Flavor Name | VCPU | RAM (MB) | Root Disk (GB) | Ephemeral Disk (GB) | Swap Disk (MB) |
     |:-----------:|:----:|:--------:|:--------------:|:-------------------:|:--------------:|
-    | tiny        | 1    | 512      | 1              | 0                   | 0              |
+    | tiny        | 1    | 512      | 2              | 0                   | 0              |
 
         # Name the resource class 'm1'.
         # Select 'Compute' in the 'Class Type' drop down.
         # Ensure you choose the overcloud-compute image.
         # Create at least one flavor as shown in the example above.
         # Be sure to associate the correct compute rack with this resource class.
+
+   **NOTE**: you will use one of the flavors you define in this step to launch the demo
+   overcloud image, fedora-cloud.qcow2. This image requires *at least* 2GB for Root Disk. So
+   ensure you define a flavor that has this characteristic (even if you only define one flavor here).
+
 
 1. **[BROWSER] Click on the 'Provision Deployment' button.**
 
@@ -431,7 +436,8 @@ an Overcloud:
 
 1. **[CONTROL] Launch an Overcloud instance:**
    Note - the flavor specified below must match one that was created by you earlier in the Tuskar UI.
-   If you are unsure you can use 'nova flavor-list':
+   If you are unsure you can use 'nova flavor-list'. Also note that the flavor you choose to launch 
+   the demo image should have **at least** 2GB for Root disk.
 
         nova boot --key-name default --flavor m1.small --image user demo
         # nova list until the instance is ACTIVE
