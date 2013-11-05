@@ -429,7 +429,15 @@ an Overcloud:
         You can then use this IP to construct the Horizon URI:
 
             http://IP_OF_NOTCOMPUTE:80
+            
+   To login to Overcloud Horizon - username is 'admin' and the password is available from the
+   tripleo-overcloud-passwords file (it is the OVERCLOUD_ADMIN_PASSWORD):
+         
+        cd ~
+        cat tripleo-overcloud-passwords
 
+
+   You can navigate to the Instances page to view details of your running Overcloud instance.
 
 [back to top](#intro)
 
