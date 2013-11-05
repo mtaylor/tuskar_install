@@ -470,7 +470,9 @@ an Overcloud:
         cat tripleo-overcloud-passwords
 
 
-   You can navigate to the Instances page to view details of your running Overcloud instance.
+   You can navigate to the Instances page in the Admin tab to view details of your running 
+   Overcloud instance. If you switch to the Project tab you will need to change the Project to
+   'demo' for the instance details to become available.
 
 [back to top](#intro)
 
