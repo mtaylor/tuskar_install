@@ -407,7 +407,8 @@ an Overcloud:
         # nova list until the instance is ACTIVE
         nova list
         
-1. **[CONTROL] Add floating IP to your Overcloud instance:**        
+1. **[CONTROL] Add floating IP to your Overcloud instance:**
+ 
         PORT=$(neutron port-list -f csv -c id --quote none | tail -n1)
         neutron floatingip-create ext-net --port-id "${PORT//[[:space:]]/}"
         # nova list again to see the assigned floating ip
