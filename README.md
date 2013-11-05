@@ -370,8 +370,7 @@ an Overcloud:
 
    If you saw 'CREATE_COMPLETE' above then you have succesfully deployed an
    Overcloud using Tuskar. We can now perform setup of the overcloud and
-   loads the demo image into overcloud glance.
-   (Assumption: you already have the demo fedora-cloud.qcow2 image on CONTROL):
+   load the demo image into overcloud glance.
 
         #Don't worry if the following complains about 'flavor m1.tiny doesn't exist'
         /opt/stack/undercloud-live/bin/configure-overcloud.sh
@@ -382,6 +381,9 @@ an Overcloud:
 
 1. **[CONTROL] Register an Overcloud demo image to launch:**
       
+   **NOTE**: you should already have the demo fedora-cloud.qcow2 image on CONTROL. Make sure the
+   path to that image is specified correctly below:
+
         #source credentials
         source tripleo-overcloud-passwords
         source /opt/stack/tripleo-incubator/overcloudrc
@@ -391,7 +393,7 @@ an Overcloud:
                 --public \
                 --disk-format qcow2 \
                 --container-format bare \
-                --file fedora-cloud.qcow2
+                --file /opt/stack/images/fedora-cloud.qcow2
 
 1. **[CONTROL] Setup Overcloud user:**
 
@@ -425,7 +427,7 @@ an Overcloud:
 
         You can then use this IP to construct the Horizon URI:
 
-            http://IP_OF_NOTCOMPUTE:8080
+            http://IP_OF_NOTCOMPUTE:80
 
 
 [back to top](#intro)
