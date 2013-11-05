@@ -2,6 +2,7 @@ UNDERCLOUDRC=/etc/sysconfig/undercloudrc
 INSTALL_DIR=/opt/stack
 NOVA_INSTALL_DIR=/usr/lib/python2.7/site-packages/nova
 BASE_DIR=`dirname $0`/../
+# This file will be created/updated as necessary
 TRIPLEO_PASSWORDS=/home/stack/tripleo-overcloud-passwords
 
 # Install deps
@@ -18,6 +19,9 @@ sudo service openstack-nova-api restart
 
 # Source credentials
 source $UNDERCLOUDRC
+
+# Generate overcloud passwords
+/opt/stack/tripleo-incubator/scripts/setup-overcloud-passwords -o -f $TRIPLEO_PASSWORDS
 
 # Setup Tuskar Core
 cd $INSTALL_DIR
