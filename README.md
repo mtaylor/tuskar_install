@@ -362,22 +362,19 @@ an Overcloud:
 1. **[BROWSER] Create a compute resource class.**
 
    Click on the 'Create Class' button to start the resource class creation
-   workflow for a compute resource class.  For demonstration purposes, these
-   instructions simulate the Amazon EC2 m1 class, and so we suggest creating
-   the following flavors:
+   workflow for a compute resource class.  As part of the creation of a compute resource class
+   you will need to define some flavors. These will be available to users of the overcloud
+   when launching instances as part of the given resource class, for example:
 
     | Flavor Name | VCPU | RAM (MB) | Root Disk (GB) | Ephemeral Disk (GB) | Swap Disk (MB) |
     |:-----------:|:----:|:--------:|:--------------:|:-------------------:|:--------------:|
     | tiny        | 1    | 512      | 1              | 0                   | 0              |
     | small       | 1    | 2048     | 20             | 0                   | 0              |
-    | medium      | 2    | 4096     | 40             | 0                   | 0              |
-    | large       | 4    | 8192     | 80             | 0                   | 0              |
-    | xlarge      | 8    | 16384    | 160            | 0                   | 0              |
 
         # Name the resource class 'm1'.
         # Select 'Compute' in the 'Class Type' drop down.
         # Ensure you choose the overcloud-compute image.
-        # (Optional) Create the flavors listed above.
+        # Create flavors as shown in the example above.
         # Be sure to associate the correct compute rack with this resource class.
 
 1. **[BROWSER] Click on the 'Provision Deployment' button.**
