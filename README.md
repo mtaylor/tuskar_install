@@ -16,7 +16,6 @@ second part will guide you through the Tuskar installation.
  * [Setup Tuskar and deploy Overcloud](#tuskar)
     * [Extra Notes/Troubleshooting for the Tuskar install](#notes_tuskar)
 
-
 ---------------------------------------------------------------------------
 
 Setup the 2 node undercloud:
@@ -288,19 +287,20 @@ an Overcloud:
         # check the variables at the top of ./bin/install.sh are correct then run:
         ./bin/install.sh
 
-1. **[CONTROL] Next add the MAC address to the top of /bin/create_racks.sh**
+1. **[CONTROL] Update the MAC addresses at the top of ./bin/create_racks.sh**
 
    You need to use the MAC addresses for the baremetal nodes you created as
    part of the 2 node undercloud setup. If you have misplaced these or if you
    wish to confirm their value, refer to the [notes](#bm_mac).
 
-        # Each Rack in the Associative Array can take a string of MAC address separated by spaces.
-        #
-        # You need a rack defined for each type of resource class you intend to
-        # create.
-        #
-        # Add MAC addresses to each defined rack for the nodes you intend to
-        # provision as that resource type.
+        #!/bin/bash
+        TUSKAR_URL="http://localhost:8585/v1"
+        UNDERCLOUDRC="/etc/sysconfig/undercloudrc"
+
+        source $UNDERCLOUDRC
+        declare -A RACKS
+        RACKS["rack-m1"]="52:54:00:2e:a7:4e"
+        RACKS["rack-control"]="52:54:00:da:8e:df"
 
 1. **[CONTROL] Run the Create Rack Script**
 
@@ -332,8 +332,9 @@ an Overcloud:
 1. **[BROWSER] Create a compute resource class.**
 
    Click on the 'Create Class' button to start the resource class creation
-   workflow for a compute resource class.  For demonstration purposes we
-   will represent the Amazon EC2 m1 class and create the following flavors:
+   workflow for a compute resource class.  For demonstration purposes, these
+   instructions simulate the Amazon EC2 m1 class, and so we suggest creating
+   the following flavors:
 
     | Flavor Name | VCPU | RAM (MB) | Root Disk (GB) | Ephemeral Disk (GB) | Swap Disk (MB) |
     |:-----------:|:----:|:--------:|:--------------:|:-------------------:|:--------------:|
@@ -346,7 +347,7 @@ an Overcloud:
         # Name the resource class 'm1'.
         # Select 'Compute' in the 'Class Type' drop down.
         # Ensure you choose the overcloud-compute image.
-        # Create the flavors listed above.
+        # (Optional) Create the flavors listed above.
         # Be sure to associate the correct compute rack with this resource class.
 
 1. **[BROWSER] Click on the 'Provision Deployment' button.**
