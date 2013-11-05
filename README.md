@@ -385,6 +385,7 @@ an Overcloud:
    path to that image is specified correctly below:
 
         #source credentials
+        cd ~
         source tripleo-overcloud-passwords
         source /opt/stack/tripleo-incubator/overcloudrc
         #NOTE SET THE CORRECT PATH TO THE fedora-cloud.qcow2 image below!
